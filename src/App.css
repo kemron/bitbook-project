@@ -1,9 +1,0 @@
-.container {
-  display: flex;
-  border-radius: 10px;
-  align-items: center;
-  background-color: var(--accent-color);
-  opacity: 0.8;
-  border: 1px solid var(--accent-border);
-  font-size: 1.5em;
-}

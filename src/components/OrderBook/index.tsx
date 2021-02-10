@@ -1,35 +1,45 @@
 import Row from "atoms/Row";
-import AggregateControls from "components/AggregateControls";
+import AggregateControls, { Direction } from "components/AggregateControls";
 import OrderTable, { Entry } from "components/OrderTable";
+import { useCallback } from "react";
 import OrderBookContainer from "./Container";
 import Header from "./Header";
+import Footer from "./Footer";
 
 export type { Entry };
 
-interface OrderBookProps {
-  displayCount?: number;
-  asks?: Entry[];
-  bids?: Entry[];
+type OrderBookProps = {
   spread: number;
   aggregation: number;
-  onUpdateAggregate?: (update: number) => void;
-}
+} & typeof defaultProps;
 
 const defaultProps = {
-  displayCount: 15,
-  asks: [],
-  bids: [],
-  onUpdateAggregate: () => {},
+  aggregateChangeFactor: 2,
+  asks: [] as Entry[],
+  bids: [] as Entry[],
+  onUpdateAggregate: (newAggregate: number) => {},
 };
 
 const OrderBook = ({
-  displayCount,
+  aggregateChangeFactor,
   bids,
   asks,
   onUpdateAggregate,
   spread,
   aggregation,
 }: OrderBookProps) => {
+  const onAggregateChange = useCallback(
+    (direction: Direction) => {
+      const factor =
+        direction === "INCREMENT"
+          ? aggregateChangeFactor
+          : 1 / aggregateChangeFactor;
+      const newAggregation = aggregation * factor;
+      onUpdateAggregate(newAggregation);
+    },
+    [aggregateChangeFactor, aggregation, onUpdateAggregate]
+  );
+
   return (
     <OrderBookContainer>
       <Header>
@@ -40,18 +50,21 @@ const OrderBook = ({
         </Row>
       </Header>
 
-      <OrderTable entries={asks!} />
+      <OrderTable entries={asks} category="asks" />
       <Header>
         <Row>
           <div>Spread </div>
           <div>{spread}</div>
         </Row>
       </Header>
-      <OrderTable entries={bids!} />
+      <OrderTable entries={bids} category="bids" />
 
-      <Header>
-        <AggregateControls aggregation={50} onAggregateSelected={() => {}} />
-      </Header>
+      <Footer>
+        <AggregateControls
+          aggregation={aggregation}
+          onAggregateSelected={onAggregateChange}
+        />
+      </Footer>
     </OrderBookContainer>
   );
 };

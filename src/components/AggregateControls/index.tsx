@@ -1,9 +1,11 @@
 import Row from "atoms/Row";
-import ButtonGroup from "components/ButtonGroup";
+import ButtonGroup, { Direction } from "components/ButtonGroup";
+
+export type { Direction };
 
 interface AggregateControlsProps {
   aggregation: number;
-  onAggregateSelected: (newAggregate: number) => void;
+  onAggregateSelected: (newAggregate: Direction) => void;
 }
 
 const AggregateControls = ({
@@ -14,7 +16,7 @@ const AggregateControls = ({
     <Row>
       <span>Aggregation</span>
       <span>{aggregation}</span>
-      <ButtonGroup onButtonClick={(ss: string) => {}} />
+      <ButtonGroup onButtonClick={onAggregateSelected} />
     </Row>
   );
 };

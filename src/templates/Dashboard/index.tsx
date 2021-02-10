@@ -1,8 +1,9 @@
-import { ReactComponent as Logo } from "./logo.svg";
+import { ReactComponent as Logo } from "assets/logo.svg";
+import SideNav from "./Sidebar";
 import styles from "./styles.module.css";
 
 interface Props {
-  Footer: React.ReactNode;
+  Footer?: React.ReactNode;
   Body: React.ReactNode;
   Sidebar: React.ReactNode;
 }
@@ -14,11 +15,11 @@ export default function DashboardTemplate({ Footer, Body, Sidebar }: Props) {
         <Logo width={32} height={32} fill="#FF9900" />
         itbook
       </header>
-      <aside className={styles.sidebar}>{Sidebar}</aside>
+      <SideNav>{Sidebar}</SideNav>
 
       <section className={styles.body}>{Body}</section>
 
-      <footer className={styles.footer}>{Footer}</footer>
+      {Footer && <footer className={styles.footer}>{Footer}</footer>}
     </main>
   );
 }

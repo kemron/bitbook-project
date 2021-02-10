@@ -3,30 +3,17 @@
 .bitbook {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: minmax(min-content, 52px) repeat(2, auto) minmax(
-      min-content,
-      55px
-    );
+  grid-template-rows: min-content 1fr min-content;
   grid-gap: 0px 0px;
+  height: 100%;
   grid-template-areas:
     "Header Header Header Header"
     "Sidebar Body Body Body"
-    "Sidebar Body Body Body"
     "Footer Footer Footer Footer";
-  @media (max-width: 600px) {
-    grid-template-areas:
-      "Header Header Header"
-      "Body Body Body"
-      "Body Body Body"
-      "Footer Footer Footer";
-  }
 
-  align-items: center;
-  margin: 20px auto;
-  width: 90vw;
-  height: 90vh;
-  box-shadow: -1px 0px 20px -6px red;
-  border-radius: 10px;
+  @media (max-width: 767px) {
+    grid-template-columns: min-content 1fr 1fr 1fr;
+  }
 }
 
 .header {
@@ -34,7 +21,7 @@
   width: 100%;
   justify-content: center;
   min-height: 50px;
-  border-radius: 10px;
+  border-radius: 5px;
   align-items: center;
   background-color: var(--accent-color);
   opacity: 0.8;

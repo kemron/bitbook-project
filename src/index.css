@@ -1,7 +1,20 @@
 @import "atoms/variables.css";
 
+.color-asks {
+  color: #d6083b;
+}
+.color-bids {
+  color: #3d9b35;
+}
+
+html,
 body {
   margin: 0;
+  padding: 0;
+}
+body {
+  width: 100%;
+  box-sizing: border-box;
   background-color: var(--background-color);
 
   font-family: "Inconsolata", monospace, -apple-system, BlinkMacSystemFont,
@@ -12,7 +25,17 @@ body {
   color: #dcd9cd;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }

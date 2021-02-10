@@ -9,8 +9,8 @@ interface ButtonGroupProps {
 const ButtonGroup = ({ onButtonClick }: ButtonGroupProps) => {
   return (
     <div>
-      <Button> - </Button>
-      <Button> + </Button>
+      <Button onClick={() => onButtonClick("DECREMENT")}> - </Button>
+      <Button onClick={() => onButtonClick("INCREMENT")}> + </Button>
     </div>
   );
 };

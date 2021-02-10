@@ -1,6 +1,7 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { Waterfall } from "hydrated-ws";
-import { StoreContext } from "data/StoreProvider";
+import { StoreContext } from "store";
+import { Payload } from "./model";
 
 const WS_URL =
   process.env.REACT_APP_WS_URL || "wss://www.cryptofacilities.com/ws/v1";
@@ -10,19 +11,30 @@ interface ConnectionProviderProps {
   socketConnection?: WebSocket;
 }
 
-type Level = [price: number, size: number];
-
-interface Payload {
-  product_id: string;
-  feed: string;
-  asks: Level[];
-  bids: Level[];
-  numLevels?: number;
+enum ConnectionState {
+  CONNECTING = 0,
+  OPEN = 1,
+  CLOSING = 2,
+  CLOSED = 3,
 }
 
-function getProductFeedPayload(socket: WebSocket, productIds: string[]) {
+type SubscriptionActionType = "subscribe" | "unsubscribe";
+
+export function isSnapshot(data: Payload): boolean {
+  return data.feed.includes("_snapshot");
+}
+
+/**
+ * Dispatches a subscription to resolver
+ * @param productIds
+ * @param type
+ */
+function subscriptionAction(
+  productIds: string[],
+  type: SubscriptionActionType = "subscribe"
+) {
   const INITIATION_EVENT = {
-    event: "subscribe",
+    event: type,
     feed: "book_ui_1",
     product_ids: productIds,
   };
@@ -33,15 +45,43 @@ export default function Transport({
   children,
   socketConnection,
 }: ConnectionProviderProps) {
-  let connection = socketConnection;
-
-  if (!connection) {
-    connection = new Waterfall(WS_URL, undefined, {
+  const connectionRef = useRef(socketConnection);
+  const isSubscribed = useRef<Boolean>(false);
+  if (!connectionRef.current) {
+    connectionRef.current = new Waterfall(WS_URL, undefined, {
       connectionTimeout: 3000,
     });
   }
-
+  const connection = connectionRef.current;
   const { updateSnapshot, state } = useContext(StoreContext)!;
+
+  useEffect(() => {
+    return () => {
+      connectionRef.current?.close();
+    };
+  }, []);
+
+  useEffect(() => {
+    const isConnectionOpen =
+      connectionRef.current?.readyState === ConnectionState.OPEN;
+
+    if (!isSubscribed.current && isConnectionOpen) {
+      connection.send(subscriptionAction([state.selectedProduct], "subscribe"));
+      isSubscribed.current = true;
+    }
+
+    return () => {
+      if (
+        connectionRef.current?.readyState === ConnectionState.OPEN &&
+        isSubscribed.current
+      ) {
+        connection.send(
+          subscriptionAction([state.selectedProduct], "unsubscribe")
+        );
+        isSubscribed.current = false;
+      }
+    };
+  }, [state.selectedProduct, connection]);
 
   useEffect(() => {
     const onMessage = (event: Event) => {
@@ -50,14 +90,19 @@ export default function Transport({
       if (!data.feed || !data.asks || !data.bids) {
         return;
       }
-      const { asks, bids } = data;
-      updateSnapshot(bids, asks);
+      const isNewSubscription = isSnapshot(data);
+      if (isNewSubscription) {
+        isSubscribed.current = true;
+      }
+
+      const { asks, bids, product_id } = data;
+      updateSnapshot(bids, asks, product_id, isNewSubscription);
     };
 
     const onConnect = () => {
-      if (connection) {
+      if (connection && connection.readyState === ConnectionState.OPEN) {
         connection.send(
-          getProductFeedPayload(connection, [state.selectedProduct])
+          subscriptionAction([state.selectedProduct], "subscribe")
         );
       }
     };

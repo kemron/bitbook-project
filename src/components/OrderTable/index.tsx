@@ -1,4 +1,5 @@
-import Row from "atoms/Row";
+import styled from "@emotion/styled";
+import Row from "./Row";
 
 export type Entry = {
   price: number;
@@ -6,19 +7,23 @@ export type Entry = {
   total: number;
 };
 
+type Category = "bids" | "asks";
 interface OrderBookProps {
   entries: Entry[];
+  category: Category;
 }
 
-const OrderTable = ({ entries }: OrderBookProps) => {
+const OrderTable = ({ entries, category, ...rest }: OrderBookProps) => {
   return (
     <>
       {entries.map((entry) => (
-        <Row key={entry.price}>
-          <span>{entry.price}</span>
-          <span>{entry.size}</span>
-          <span>{entry.total}</span>
-        </Row>
+        <Row
+          key={entry.price}
+          price={entry.price}
+          size={entry.size}
+          total={entry.total}
+          category={category}
+        />
       ))}
     </>
   );
