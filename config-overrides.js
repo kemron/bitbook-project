@@ -1,9 +1,12 @@
 const CSPHtmlWebpackPlugin = require("csp-html-webpack-plugin");
 const { override } = require("customize-cra");
 
+const DATAFEED_URL =
+  process.env.REACT_APP_WS_URL || "wss://www.cryptofacilities.com/ws/v1";
+
 const CSP_POLICY = {
   "default-src": "'self'",
-  "connect-src": ["'self'", "wss://www.cryptofacilities.com/ws/v1"],
+  "connect-src": ["'self'", DATAFEED_URL],
   "font-src": ["https://fonts.gstatic.com"],
   "style-src": [
     "'self'",
