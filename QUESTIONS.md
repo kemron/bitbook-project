@@ -28,6 +28,6 @@ Major security risks that a frontend developer needs to be concerned with are:
 1. The introduction of malicious code into the environment via some sort of XSS vector or untrusted domains.
 2. The inappropriate storage and handling of authentication tokens on the client-side
 
-## How would you improve the Kraken API that you just used?
+## How would you improve the API that you just used?
 
 The live feed of the spot price of the product would be a great addition
