@@ -1,6 +1,6 @@
 # Welcome to Bitbook!
 
-Bitbook is a basic implementation of an orderbook using React.
+Bitbook is a basic example implementation of an orderbook using React.
 
 ## How to Run
 
