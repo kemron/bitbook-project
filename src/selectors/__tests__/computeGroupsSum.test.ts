@@ -13,10 +13,10 @@ describe("computeGroupsSum", () => {
     const orderGroups = SortableMap(orders);
 
     const expected = [
-      [47000, 500, 24000],
-      [55000, 8000, 23500],
-      [64500, 9500, 15500],
-      [65000, 6000, 6000],
+      [65000, 6000, 24000],
+      [64500, 9500, 18000],
+      [55000, 8000, 8500],
+      [47000, 500, 500],
     ];
     const results = computeGroupsSum(orderGroups).toArray();
 

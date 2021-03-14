@@ -28,7 +28,7 @@ export const selectGroupingKey = (
 const buildGroups = (orders: SortedMap<number, number>, grouping: number) => {
   let groups = SortableMap<OrderGroup>([]);
   groups = groups.withMutations((mGroupMap) => {
-    orders.toArray().map(function (order, index) {
+    orders.toArray().forEach(function (order, index) {
       const groupKey = selectGroupingKey(order, grouping);
       const [, count] = mGroupMap.get(groupKey, [groupKey, 0, 0]);
       const newCount = count + getOrderSize(order);

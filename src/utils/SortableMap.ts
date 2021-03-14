@@ -1,6 +1,7 @@
 import { SortedMap } from "immutable-sorted";
 export { SortedMap };
 
+// Sort in Descending order
 const compare = (key1: number, key2: number): number => {
   const currPrice = Number(key1);
   const nextPrice = Number(key2);

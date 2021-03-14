@@ -18,9 +18,9 @@ const ListItem = styled.div<RowProps>`
   ${({ isSelected }) =>
     isSelected ? `background-color:${theme.palette.accent2}` : ""};
   :hover {
-    background-color: ${theme.palette.accent};
+    ${({ isSelected }) =>
+      !isSelected ? `background-color:${theme.palette.accent}` : ""};
   }
-
   & > * {
     margin-left: 10px;
   }
