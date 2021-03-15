@@ -14,7 +14,6 @@ const Row = styled.div<RowProps>`
     1fr
   );
   width: 100%;
-  position: sticky;
   text-align: center;
 `;
 

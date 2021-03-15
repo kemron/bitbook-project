@@ -1,11 +1,11 @@
 @import "atoms/variables.css";
 
 .bitbook {
+   height: 560px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: min-content 1fr min-content;
   grid-gap: 0px 0px;
-  height: 100%;
   grid-template-areas:
     "Header Header Header Header"
     "Sidebar Body Body Body"

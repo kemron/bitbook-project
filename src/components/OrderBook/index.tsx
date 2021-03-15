@@ -50,14 +50,19 @@ const OrderBook = ({
         </Row>
       </Header>
 
-      <OrderTable entries={asks} category="asks" />
+      <div style={{ marginTop: "auto" }}>
+        <OrderTable entries={asks} category="asks" />
+      </div>
+
       <Header>
         <Row>
           <div>Spread </div>
           <div>{spread}</div>
         </Row>
       </Header>
-      <OrderTable entries={bids} category="bids" />
+      <div style={{ marginBottom: "auto" }}>
+        <OrderTable entries={bids} category="bids" />
+      </div>
 
       <Footer>
         <AggregateControls
